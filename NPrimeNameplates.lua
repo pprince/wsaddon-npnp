@@ -419,7 +419,7 @@ function NPrimeNameplates:InitNameplate(p_unit, p_nameplate, p_type, p_target)
 	p_nameplate.isMounted 			= p_unit:IsMounted()
 	p_nameplate.isObjective			= false
 	p_nameplate.pvpFlagged 			= p_unit:IsPvpFlagged()
-	p_nameplate.hasActivationState	= self:HasActivationState(p_unit)
+	p_nameplate.hasActivationState          = self:HasActivationState(p_unit)
 	p_nameplate.hasShield			= p_unit:GetShieldCapacityMax() ~= nil and p_unit:GetShieldCapacityMax() ~= 0
 
 	local l_w = _matrix["SliderBarScale"] / 2
@@ -703,7 +703,11 @@ function NPrimeNameplates:UpdateMainContainer(p_nameplate)
 	local l_fullHealth 	= l_health == l_healthMax;
 	local l_shieldFull 	= false;
 	local l_hiddenBecauseFull = false;
+        
+        local l_isHostile = p_nameplate.disposition == Unit.CodeEnumDisposition.Hostile
 	local l_isFriendly = p_nameplate.disposition == Unit.CodeEnumDisposition.Friendly
+        local l_isSelf	= self.nameplates
+        local l_isPlayer = p_nameplate.isPlayer
 
 	if (p_nameplate.hasShield)
 		then l_shieldFull = l_shield == l_shieldMax;
@@ -711,13 +715,9 @@ function NPrimeNameplates:UpdateMainContainer(p_nameplate)
 
 	if (not p_nameplate.targetNP) then
 		l_hiddenBecauseFull = (_matrix["ConfigSimpleWhenHealthy"] and l_fullHealth) or
-							  (_matrix["ConfigSimpleWhenFullShield"] and l_shieldFull);
-	end
-        if (not p_nameplate.targetNP) then
-		l_hiddenBecauseFull = (_matrix["ConfigSimpleWhenHealthy"] and l_fullHealth) and
-							  (_matrix["ConfigSimpleWhenFullShield"] and l_shieldFull);
-	end
-
+                                      (_matrix["ConfigSimpleWhenFullShield"] and l_shieldFull);
+        end
+        
 	local l_matrixEnabled = GetFlag(p_nameplate.matrixFlags, F_HEALTH)
 	local l_visible = l_matrixEnabled and not l_hiddenBecauseFull
 
@@ -1115,8 +1115,8 @@ function NPrimeNameplates:CheckMatrixIntegrity()
 
 	if (_type(_matrix["ConfigLargeShield"]) ~= "boolean") 			then _matrix["ConfigLargeShield"] 			= false end
 	if (_type(_matrix["ConfigHealthPct"]) ~= "boolean") 			then _matrix["ConfigHealthPct"] 			= false end
-	if (_type(_matrix["ConfigSimpleWhenHealthy"]) ~= "boolean") 	then _matrix["ConfigSimpleWhenHealthy"] 	= false end
-	if (_type(_matrix["ConfigSimpleWhenFullShield"]) ~= "boolean") 	then _matrix["ConfigSimpleWhenFullShield"] 	= false end
+	if (_type(_matrix["ConfigSimpleWhenHealthy"]) ~= "boolean")             then _matrix["ConfigSimpleWhenHealthy"] 	= false end
+	if (_type(_matrix["ConfigSimpleWhenFullShield"]) ~= "boolean")          then _matrix["ConfigSimpleWhenFullShield"] 	= false end
 	if (_type(_matrix["ConfigAggroIndication"]) ~= "boolean") 		then _matrix["ConfigAggroIndication"] 		= false end
 	if (_type(_matrix["ConfigHideAffiliations"]) ~= "boolean") 		then _matrix["ConfigHideAffiliations"] 		= false end
 	if (_type(_matrix["ConfigAlternativeFont"]) ~= "boolean") 		then _matrix["ConfigAlternativeFont"] 		= false end
@@ -1529,7 +1529,7 @@ function NPrimeNameplates:GetUnitType(p_unit)
 
 	local l_type = p_unit:GetType()
 	if (l_type == "BindPoint") 				then return "Other" end
-	if (l_type == "PinataLoot") 			then return "Other" end
+	if (l_type == "PinataLoot")                             then return "Other" end
 	if (l_type == "Ghost") 					then return "Hidden" end
 	if (l_type == "Mount")	 				then return "Hidden" end
 
