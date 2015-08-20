@@ -1349,28 +1349,36 @@ function NPrimeNameplates:UpdateCasting(p_nameplate)
 end
 
 function NPrimeNameplates:UpdateArmor(p_nameplate)
-  local l_armorMax = p_nameplate.unit:GetInterruptArmorMax()
-  local l_showArmor = GetFlag(p_nameplate.matrixFlags, F_ARMOR) and l_armorMax ~= 0
+	local l_armorMax = p_nameplate.unit:GetInterruptArmorMax()
+	local l_showArmor = GetFlag(p_nameplate.matrixFlags, F_ARMOR) and l_armorMax ~= 0
 
-  if (p_nameplate.iconArmor:IsVisible() ~= l_showArmor) then
-    p_nameplate.iconArmor:Show(l_showArmor)
-  end
+	if (p_nameplate.iconArmor:IsVisible() ~= l_showArmor) then
+		p_nameplate.iconArmor:Show(l_showArmor)
+	end
 
-  if (not l_showArmor) then return end
+	if (not l_showArmor) then return end
 
-  if (l_armorMax > 0) then
-    p_nameplate.iconArmor:SetText(p_nameplate.unit:GetInterruptArmorValue())
-  end
+	if (l_armorMax > 0) then
+            p_nameplate.iconArmor:SetText(p_nameplate.unit:GetInterruptArmorValue())
+            p_nameplate.iconArmor:SetTextColor("FFFFFFFF")
+            p_nameplate.iconArmor:SetSprite("NPrimeNameplates_Sprites:IconArmor")
+        end
 
-  if (p_nameplate.prevArmor ~= l_armorMax) then
-    p_nameplate.prevArmor = l_armorMax
-    if (l_armorMax == -1) then
-      p_nameplate.iconArmor:SetText("")
-      p_nameplate.iconArmor:SetSprite("NPrimeNameplates_Sprites:IconArmor_02")
-    elseif (l_armorMax > 0) then
-      p_nameplate.iconArmor:SetSprite("NPrimeNameplates_Sprites:IconArmor")
-    end
-  end
+
+	if (p_nameplate.prevArmor ~= l_armorMax) then
+		p_nameplate.prevArmor = l_armorMax
+		if (l_armorMax == -1) then
+			p_nameplate.iconArmor:SetText("")
+			p_nameplate.iconArmor:SetSprite("NPrimeNameplates_Sprites:IconArmor_02")
+		elseif (l_armorMax > 0) then
+			p_nameplate.iconArmor:SetSprite("NPrimeNameplates_Sprites:IconArmor")
+		end
+	end
+        if p_nameplate.unit:GetInterruptArmorValue() <= 0 then
+            p_nameplate.iconArmor:SetText("")
+            p_nameplate.iconArmor:SetSprite("")
+        end
+        
 end
 
 function NPrimeNameplates:UpdateOpacity(p_nameplate, p_textBubble)
