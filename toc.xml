@@ -2,5 +2,5 @@
 <Addon Author="NyanPrime" APIVersion="10" Name="NPrimeNameplates" Description="" Version="1.0">
     <Script Name="NPrimeNameplates.lua"/>
     <Form Name="NPrimeNameplates.xml"/>
-	<ReplaceAddon Name="Nameplates"/>
+    <ReplaceAddon Name="Nameplates"/>
 </Addon>
