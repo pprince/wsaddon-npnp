@@ -1340,9 +1340,11 @@ function NPrimeNameplates:UpdateArmor(p_nameplate)
 	if (not l_showArmor) then return end
 
 	if (l_armorMax > 0) then
-		p_nameplate.iconArmor:SetText(p_nameplate.unit:GetInterruptArmorValue())
-                p_nameplate.iconArmor:SetTextColor("FFFFFFFF")
-	end
+            p_nameplate.iconArmor:SetText(p_nameplate.unit:GetInterruptArmorValue())
+            p_nameplate.iconArmor:SetTextColor("FFFFFFFF")
+            p_nameplate.iconArmor:SetSprite("NPrimeNameplates_Sprites:IconArmor")
+        end
+
 
 	if (p_nameplate.prevArmor ~= l_armorMax) then
 		p_nameplate.prevArmor = l_armorMax
@@ -1353,6 +1355,11 @@ function NPrimeNameplates:UpdateArmor(p_nameplate)
 			p_nameplate.iconArmor:SetSprite("NPrimeNameplates_Sprites:IconArmor")
 		end
 	end
+        if p_nameplate.unit:GetInterruptArmorValue() <= 0 then
+            p_nameplate.iconArmor:SetText("")
+            p_nameplate.iconArmor:SetSprite("")
+        end
+        
 end
 
 function NPrimeNameplates:UpdateOpacity(p_nameplate, p_textBubble)
