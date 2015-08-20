@@ -713,6 +713,10 @@ function NPrimeNameplates:UpdateMainContainer(p_nameplate)
 		l_hiddenBecauseFull = (_matrix["ConfigSimpleWhenHealthy"] and l_fullHealth) or
 							  (_matrix["ConfigSimpleWhenFullShield"] and l_shieldFull);
 	end
+        if (not p_nameplate.targetNP) then
+		l_hiddenBecauseFull = (_matrix["ConfigSimpleWhenHealthy"] and l_fullHealth) and
+							  (_matrix["ConfigSimpleWhenFullShield"] and l_shieldFull);
+	end
 
 	local l_matrixEnabled = GetFlag(p_nameplate.matrixFlags, F_HEALTH)
 	local l_visible = l_matrixEnabled and not l_hiddenBecauseFull
